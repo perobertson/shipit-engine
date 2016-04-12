@@ -10,6 +10,8 @@ module Shipit
       @user_stacks = current_user.stacks_contributed_to
 
       @stacks = Stack.order('(undeployed_commits_count > 0) desc', tasks_count: :desc).to_a
+
+      render 'index_bs', layout: 'shipit_bs' if Shipit.feature_bootstrap? || params[:layout] == 'bootstrap'
     end
 
     def show

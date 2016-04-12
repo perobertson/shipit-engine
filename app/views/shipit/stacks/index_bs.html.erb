@@ -1,0 +1,42 @@
+<% content_for :page_title do %>
+Shipit
+<% end %>
+<% content_for :primary_navigation do %>
+  <ul class="nav navbar-nav">
+    <li class="nav-item">
+      <%= link_to 'Add a stack', new_stack_path, class: 'nav-link btn btn-secondary-outline' %>
+    </li>
+  </ul>
+<% end %>
+
+<div class="container">
+  <section>
+    <header class="stack-search-header">
+      <input class="stack-search" placeholder="Search <%= @stacks.size %> stacks" <%= "hidden" if @stacks.size <= 10 %> />
+    </header>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-3">Name</div>
+        <div class="col-xs-3">Environment</div>
+        <div class="col-xs-3">Branch</div>
+        <div class="col-xs-3">Deploy URL</div>
+      </div>
+      <hr>
+
+      <% @stacks.each do |stack| %>
+        <div class="row search-item <%= stack.undeployed_commits? ? 'undeployed' : '' %> <%= @user_stacks.include?(stack.id) ? 'contributor' : 'not-matching' %>" data-search="<%= stack.repo_name %> <%= stack.environment %> <%= stack.deploy_url %>" data-stack-id="<%= stack.id %>">
+          <%= link_to stack_path(stack) do %>
+            <div class="col-xs-3"><%= stack.repo_name %></div>
+            <div class="col-xs-3"><%= stack.environment.capitalize %></div>
+            <div class="col-xs-3"><%= stack.branch %></div>
+            <div class="col-xs-3"><%= stack.deploy_url %></div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <%= link_to 'show all stacks', '#', class: 'btn btn-secondary show-all-stacks' %></p>
+  </section>
+
+</div>
