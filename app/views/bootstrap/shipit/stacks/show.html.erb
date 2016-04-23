@@ -1,0 +1,65 @@
+<%= render partial: 'bootstrap/shipit/stacks/header', locals: { stack: @stack } %>
+
+<% if !@stack.ignore_ci && !@stack.ci_enabled? %>
+  <div class="jumbotron jumbotron-fluid bg-info">
+    <div class="container">
+      <button type="button" class="close" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <h1>Heads Up!</h1>
+      <p class='lead'>
+        This stack is not configured for CI, but it currently requires a passing build to be able to deploy a commit.<br>
+        You can either <a href="https://developer.github.com/v3/repos/statuses/">configure your CI to push statuses to GitHub</a>,
+        or ignore CI and deploy any commits you want.
+      </p>
+      <%= button_to "Ignore CI", stack_path(@stack, stack: {ignore_ci: true}, return_to: stack_path(@stack)), method: :patch, class: 'btn btn-primary' %>
+    </div>
+  </div>
+<% end %>
+
+<% if @stack.inaccessible? %>
+  <div class="jumbotron jumbotron-fluid bg-danger">
+    <div class="container">
+      <h1>This repository seems to be missing!</h1>
+      <p class="lead">
+        <%= link_to @stack.github_repo_name, github_repo_url(@stack.repo_owner, @stack.repo_name) %>
+        has been inaccessible for <%= time_ago_in_words(@stack.inaccessible_since) %>.
+
+        This could be a permission issue, or the repository have been deleted on GitHub.
+      </p>
+    </div>
+  </div>
+<% end %>
+
+<% if @stack.locked? %>
+  <div class="jumbotron jumbotron-fluid bg-warning">
+    <div class="container">
+      <h2>
+        <i class="icon icon--lock"></i>
+        Deploys are locked by <%= @stack.lock_author.name %>
+      </h2>
+      <p class="lead">
+        <%= auto_link emojify(@stack.lock_reason) %>
+      </p>
+    </div>
+  </div>
+<% end %>
+
+<div class="container" data-event-stream="<%= events_path(channels: ["stack.#{@stack.id}"]) %>">
+
+  <section>
+    <header>
+      <h2>Undeployed Commits</h2>
+    </header>
+    <div class="container">
+      <%= render partial: 'bootstrap/shipit/commits/commit', collection: @commits.to_a %>
+    </div>
+  </section>
+
+  <section>
+    <header>
+      <h2>Previous Deploys</h2>
+    </header>
+    <ul class="commit-list"><%= render @tasks %></ul>
+  </section>
+</div>

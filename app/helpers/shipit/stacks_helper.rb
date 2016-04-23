@@ -21,11 +21,20 @@ module Shipit
       params[:force].present?
     end
 
-    def deploy_button(commit)
+    def deploy_button(commit, bootstrap: false)
       url = new_stack_deploy_path(@stack, sha: commit.sha)
-      classes = %W(btn btn--primary deploy-action #{commit.state})
+      classes = %W(btn deploy-action #{commit.state})
+      if bootstrap
+        classes.push('btn-primary')
+      else
+        classes.push('btn--primary')
+      end
       if deploy_button_disabled?(commit)
-        classes.push(params[:force].present? ? 'btn--warning' : 'btn--disabled')
+        if bootstrap
+          classes.push(params[:force].present? ? 'btn-warning' : 'btn-disabled')
+        else
+          classes.push(params[:force].present? ? 'btn--warning' : 'btn--disabled')
+        end
       end
 
       link_to(deploy_button_caption(commit), url, class: classes)

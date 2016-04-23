@@ -1,0 +1,43 @@
+<% content_for :page_title do %>
+  <h3>
+    <%= stack.repo_owner %>
+    <small class='text-muted'><%= stack.repo_name %> <%= stack.environment %></small>
+  </h3>
+<% end %>
+
+<% content_for :primary_navigation do %>
+  <ul class="nav navbar-nav">
+    <li class="nav-item">
+      <%= link_to 'Refresh statuses & commits', stack_refresh_path(stack), method: 'post', class: 'btn btn-primary-outline' %>
+    </li>
+    <% stack.task_definitions.each do |definition| %>
+      <li class="nav-item">
+        <%= link_to "#{definition.action}…", new_stack_tasks_path(stack, definition_id: definition.id), class: %w(btn btn-primary-outline) %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+<% content_for :secondary_navigation do %>
+  <nav class="navbar navbar-light bg-faded">
+    <div class="nav navbar-nav">
+      <%= link_to "Commits & Deploys", stack_path(stack), class: 'nav-item nav-link' %>
+      <%= link_to 'Settings', stack_settings_path(stack), class: 'nav-item nav-link' %>
+      <%= link_to 'Timeline', index_stack_tasks_path(stack), class: 'nav-item nav-link' %>
+    </div>
+
+    <div class="pull-xs-right">
+      <div class="nav navbar-nav">
+        <%= link_to 'View on GitHub', github_repo_url(stack.repo_owner, stack.repo_name), class: 'nav-item nav-link' %>
+        <% if stack.deploy_url.present? %>
+          <%= link_to 'View website', stack.deploy_url, target: '_blank', class: 'nav-item nav-link deploy-url' %>
+        <% end %>
+        <% if params[:force] %>
+          <%= link_to 'Exit emergency mode', stack_path(@stack), class: 'nav-item nav-link btn btn-success' %>
+        <% else %>
+          <%= link_to 'Enable emergency mode', stack_path(@stack, force: 1), class: 'nav-item nav-link btn btn-danger' %>
+        <% end %>
+      </div>
+    </div>
+  </nav>
+<% end %>

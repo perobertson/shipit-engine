@@ -1,8 +1,9 @@
 // Custom bootstrap variables must be set or import before bootstrap itself.
+$enable-flex: true;
 @import "bootstrap";
 
 body {
-  padding-top: 5rem;
+  padding-top: 4.2rem;
 }
 
 .navbar-brand {
