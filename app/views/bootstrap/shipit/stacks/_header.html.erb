@@ -8,36 +8,50 @@
 <% content_for :primary_navigation do %>
   <ul class="nav navbar-nav">
     <li class="nav-item">
-      <%= link_to 'Refresh statuses & commits', stack_refresh_path(stack), method: 'post', class: 'btn btn-primary-outline' %>
+      <% if params[:force] %>
+        <%= link_to 'Exit emergency mode', stack_path(@stack), class: 'btn btn-success' %>
+      <% else %>
+        <%= link_to 'Enable emergency mode', stack_path(@stack, force: 1), class: 'btn btn-danger' %>
+      <% end %>
     </li>
-    <% stack.task_definitions.each do |definition| %>
-      <li class="nav-item">
-        <%= link_to "#{definition.action}…", new_stack_tasks_path(stack, definition_id: definition.id), class: %w(btn btn-primary-outline) %>
-      </li>
-    <% end %>
   </ul>
 <% end %>
 
 <% content_for :secondary_navigation do %>
-  <nav class="navbar navbar-light bg-faded">
-    <div class="nav navbar-nav">
-      <%= link_to "Commits & Deploys", stack_path(stack), class: 'nav-item nav-link' %>
-      <%= link_to 'Settings', stack_settings_path(stack), class: 'nav-item nav-link' %>
-      <%= link_to 'Timeline', index_stack_tasks_path(stack), class: 'nav-item nav-link' %>
-    </div>
-
-    <div class="pull-xs-right">
-      <div class="nav navbar-nav">
-        <%= link_to 'View on GitHub', github_repo_url(stack.repo_owner, stack.repo_name), class: 'nav-item nav-link' %>
-        <% if stack.deploy_url.present? %>
-          <%= link_to 'View website', stack.deploy_url, target: '_blank', class: 'nav-item nav-link deploy-url' %>
-        <% end %>
-        <% if params[:force] %>
-          <%= link_to 'Exit emergency mode', stack_path(@stack), class: 'nav-item nav-link btn btn-success' %>
-        <% else %>
-          <%= link_to 'Enable emergency mode', stack_path(@stack, force: 1), class: 'nav-item nav-link btn btn-danger' %>
-        <% end %>
-      </div>
-    </div>
-  </nav>
+  <div class="container p-l-0 p-r-0">
+    <nav class="navbar navbar-light">
+      <ul class="nav navbar-nav">
+        <li class="nav-item">
+          <%= link_to "Commits & Deploys", stack_path(stack), class: 'nav-link active' %>
+        </li>
+        <li class="nav-item">
+          <%= link_to 'Settings', stack_settings_path(stack), class: 'nav-link' %>
+        </li>
+        <li class="nav-item">
+          <%= link_to 'Timeline', index_stack_tasks_path(stack), class: 'nav-link' %>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav pull-xs-right">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Tasks</a>
+          <div class="dropdown-menu">
+            <%= link_to 'Refresh statuses & commits', stack_refresh_path(stack), method: 'post', class: 'dropdown-item' %>
+            <div class="dropdown-divider"></div>
+            <% stack.task_definitions.each do |definition| %>
+              <%= link_to "#{definition.action}…", new_stack_tasks_path(stack, definition_id: definition.id), class: %w(dropdown-item) %>
+            <% end %>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Links</a>
+          <div class="dropdown-menu">
+            <%= link_to 'View on GitHub', github_repo_url(stack.repo_owner, stack.repo_name), target: '_blank', class: 'dropdown-item' %>
+            <% if stack.deploy_url.present? %>
+              <%= link_to 'View website', stack.deploy_url, target: '_blank', class: 'dropdown-item' %>
+            <% end %>
+          </div>
+        </li>
+      </ul>
+    </nav>
+  </div>
 <% end %>

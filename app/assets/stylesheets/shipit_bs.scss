@@ -2,10 +2,6 @@
 $enable-flex: true;
 @import "bootstrap";
 
-body {
-  padding-top: 4.2rem;
-}
-
 .navbar-brand {
   background: asset-data-url('anchor.svg') center center no-repeat;
   display: block;
