@@ -17,6 +17,10 @@
       <%= content_tag :div, msg, class: ["flash-#{name}", :flash] %>
     <% end %>
 
+    <div class="pull-xs-right p-r-1">
+      <%= link_to "Shipit v#{Shipit::VERSION}", "https://github.com/Shopify/shipit-engine/tree/v#{Shipit::VERSION}" %>
+    </div>
+
     <nav class="navbar navbar-light">
       <div class="container">
         <%= link_to "Shipit", root_path, class: "navbar-brand" %>
@@ -28,10 +32,6 @@
             <% end %>
           </li>
         </ul>
-
-        <div class="pull-xs-right">
-          <%= link_to "Shipit v#{Shipit::VERSION}", "https://github.com/Shopify/shipit-engine/tree/v#{Shipit::VERSION}" %>
-        </div>
 
         <div class="container pull-xs-right">
           <%= yield :primary_navigation %>
