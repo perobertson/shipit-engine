@@ -1,7 +1,11 @@
-<div class="col-xs-1">
-  <%= github_avatar(commit.author, size: 80, class: 'img-thumbnail') %>
+<div class="col-xs-1 p-r-0">
+  <a href="<%= github_user_url(commit.author.login) %>">
+    <%= github_avatar(commit.author, size: 60, class: 'img-rounded') %>
+  </a>
 </div>
-<div class="col-xs-2">
-  <span class=""><%= commit.author.name %></span>
-  <span class=""><%= commit.author.login %></span>
+<div class="col-xs-2 p-l-0">
+  <a href="<%= github_user_url(commit.author.login) %>">
+    <span><%= commit.author.name %></span>
+    <small><%= commit.author.login %></small>
+  </a>
 </div>

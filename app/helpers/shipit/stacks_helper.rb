@@ -31,7 +31,7 @@ module Shipit
       end
       if deploy_button_disabled?(commit)
         if bootstrap
-          classes.push(params[:force].present? ? 'btn-warning' : 'btn-disabled')
+          classes.push(params[:force].present? ? 'btn-warning' : 'btn-primary-outline disabled')
         else
           classes.push(params[:force].present? ? 'btn--warning' : 'btn--disabled')
         end

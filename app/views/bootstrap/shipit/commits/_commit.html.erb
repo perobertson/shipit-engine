@@ -1,24 +1,25 @@
+<hr class="m-t-0 m-b-1">
 <div class="row" id="commit-<%= commit.id %>">
   <%= render 'bootstrap/shipit/commits/commit_author', commit: commit %>
   <div class="col-xs-1">
     <%= render commit.status %>
   </div>
   <div class="col-xs-6">
-    <div class="commit-details">
-      <span class="commit-title"><%= render_commit_message_with_link commit %></span>
-      <p class="commit-meta">
-        <span class="sha"><%= render_commit_id_link(commit) %></span>
+    <div>
+      <span><%= render_commit_message_with_link commit %></span>
+      <div>
+        <small><%= render_commit_id_link commit %></small>
         <% if commit.additions? && commit.deletions? %>
-          <span class="text-success">+<%= commit.additions %></span>
-          <span class="text-danger">-<%= commit.deletions %></span>
+          <small class="text-success">+<%= commit.additions %></small>
+          <small class="text-danger">-<%= commit.deletions %></small>
         <% end %>
-      </p>
-      <p class="commit-meta">
+      </div>
+      <div class="text-muted">
         <%= timeago_tag(commit.committed_at, force: true) %>
-      </p>
+      </div>
     </div>
   </div>
-  <div class="col-xs-1 commit-actions">
+  <div class="col-xs-1">
     <%= deploy_button(commit, bootstrap: true) %>
   </div>
 </div>
