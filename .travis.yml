@@ -15,6 +15,7 @@ matrix:
   include:
     - rvm: 2.2
       env: SUITE=sqlite3
+    - rvm: 2.3
 notifications:
   email: false
 services:
