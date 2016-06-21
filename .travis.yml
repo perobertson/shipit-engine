@@ -9,13 +9,9 @@ env:
     - SUITE=sqlite3
     - SUITE=rubocop
 rvm:
-  - 2.1
-matrix:
-  fast_finish: true
-  include:
-    - rvm: 2.2
-      env: SUITE=sqlite3
-    - rvm: 2.3
+  - 2.1.10
+  - 2.2.5
+  - 2.3.1
 notifications:
   email: false
 services:
