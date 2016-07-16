@@ -45,7 +45,9 @@ module Shipit
           render text: "You must be a member of #{team_list} to access this application.", status: :forbidden
         end
       else
-        redirect_to Shipit::Engine.routes.url_helpers.github_authentication_path(origin: request.original_url)
+        # When this is behind nginx request.original_url is set to the url specified in the nginx config
+        # Just happens that we have a handy variable storing what it should be
+        redirect_to Shipit::Engine.routes.url_helpers.github_authentication_path(origin: Shipit.host + request.original_fullpath)
       end
     end
 
